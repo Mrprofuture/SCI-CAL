@@ -6,224 +6,127 @@
     <title>Responsive Scientific Calculator</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f7f7f7;
             margin: 0;
+            background-color: #f0f0f0;
         }
-
         .calculator {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-        }
-
-        .calculator-screen {
-            width: 100%;
-            height: 40px;
-            border: none;
-            background-color: #252525;
-            color: #fff;
-            text-align: right;
-            padding-right: 10px;
-            padding-left: 10px;
-            font-size: 1.5rem;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        .calculator-keys {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            max-width: 100%;
         }
-
-        button {
-            height: 40px;
-            border: none;
-            border-radius: 5px;
-            background-color: #f1f1f1;
-            font-size: 1.2rem;
-        }
-
-        button.operator {
-            background-color: #ff8c00;
-            color: #fff;
-        }
-
-        button.equal-sign {
-            background-color: #4caf50;
-            color: #fff;
+        .calculator input {
             grid-column: span 4;
+            height: 50px;
+            font-size: 24px;
+            text-align: right;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
         }
-
-        button.all-clear {
-            background-color: #e53935;
-            color: #fff;
+        .button {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
-        button:active {
+        .button:hover {
             background-color: #ddd;
+        }
+        .button:active {
+            background-color: #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .button-clear {
+            background-color: #f44336;
+            color: white;
+        }
+        .button-equal {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .button-op {
+            background-color: #2196F3;
+            color: white;
+        }
+        @media (max-width: 400px) {
+            .calculator {
+                width: 90%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="calculator">
-        <input type="text" class="calculator-screen" value="" disabled />
-        <div class="calculator-keys">
-            <button type="button" class="operator" value="+">+</button>
-            <button type="button" class="operator" value="-">-</button>
-            <button type="button" class="operator" value="*">&times;</button>
-            <button type="button" class="operator" value="/">&divide;</button>
 
-            <button type="button" value="7">7</button>
-            <button type="button" value="8">8</button>
-            <button type="button" value="9">9</button>
+<div class="calculator">
+    <input type="text" id="display" disabled>
+    <button class="button button-clear" onclick="clearDisplay()">C</button>
+    <button class="button" onclick="appendToDisplay('7')">7</button>
+    <button class="button" onclick="appendToDisplay('8')">8</button>
+    <button class="button" onclick="appendToDisplay('9')">9</button>
+    <button class="button button-op" onclick="appendToDisplay('/')">/</button>
 
-            <button type="button" value="4">4</button>
-            <button type="button" value="5">5</button>
-            <button type="button" value="6">6</button>
+    <button class="button" onclick="appendToDisplay('4')">4</button>
+    <button class="button" onclick="appendToDisplay('5')">5</button>
+    <button class="button" onclick="appendToDisplay('6')">6</button>
+    <button class="button button-op" onclick="appendToDisplay('*')">*</button>
 
-            <button type="button" value="1">1</button>
-            <button type="button" value="2">2</button>
-            <button type="button" value="3">3</button>
+    <button class="button" onclick="appendToDisplay('1')">1</button>
+    <button class="button" onclick="appendToDisplay('2')">2</button>
+    <button class="button" onclick="appendToDisplay('3')">3</button>
+    <button class="button button-op" onclick="appendToDisplay('-')">-</button>
 
-            <button type="button" value="0">0</button>
-            <button type="button" class="decimal" value=".">.</button>
-            <button type="button" class="all-clear" value="all-clear">AC</button>
+    <button class="button" onclick="appendToDisplay('0')">0</button>
+    <button class="button" onclick="appendToDisplay('.')">.</button>
+    <button class="button button-equal" onclick="calculate()">=</button>
+    <button class="button button-op" onclick="appendToDisplay('+')">+</button>
 
-            <button type="button" class="operator" value="(">(</button>
-            <button type="button" class="operator" value=")">)</button>
-            <button type="button" class="operator" value="%">%</button>
-            <button type="button" class="operator" value="^">^</button>
-            <button type="button" class="operator" value="sqrt">√</button>
-            <button type="button" class="operator" value="sin">sin</button>
-            <button type="button" class="operator" value="cos">cos</button>
-            <button type="button" class="operator" value="tan">tan</button>
-            <button type="button" class="operator" value="log">log</button>
-            <button type="button" class="operator" value="ln">ln</button>
+    <button class="button" onclick="appendToDisplay('sqrt(')">√</button>
+    <button class="button" onclick="appendToDisplay('**')">^</button>
+    <button class="button" onclick="appendToDisplay('(')">(</button>
+    <button class="button" onclick="appendToDisplay(')')">)</button>
+</div>
 
-            <button type="button" class="equal-sign" value="=">=</button>
-        </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const calculator = {
-                displayValue: '0',
-                firstOperand: null,
-                waitingForSecondOperand: false,
-                operator: null,
-            };
+<script>
+    function appendToDisplay(value) {
+        document.getElementById("display").value += value;
+    }
 
-            function inputDigit(digit) {
-                const { displayValue, waitingForSecondOperand } = calculator;
+    function clearDisplay() {
+        document.getElementById("display").value = "";
+    }
 
-                if (waitingForSecondOperand === true) {
-                    calculator.displayValue = digit;
-                    calculator.waitingForSecondOperand = false;
-                } else {
-                    calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
-                }
-            }
+    function calculate() {
+        let expression = document.getElementById("display").value;
 
-            function inputDecimal(dot) {
-                if (calculator.waitingForSecondOperand === true) {
-                    calculator.displayValue = '0.';
-                    calculator.waitingForSecondOperand = false;
-                    return;
-                }
+        // Replace 'sqrt(' with 'Math.sqrt(' for square root calculation
+        expression = expression.replace(/sqrt\(([^)]+)\)/g, 'Math.sqrt($1)');
 
-                if (!calculator.displayValue.includes(dot)) {
-                    calculator.displayValue += dot;
-                }
-            }
+        // Use eval to calculate the result of the expression
+        try {
+            let result = eval(expression);
+            document.getElementById("display").value = result;
+        } catch (error) {
+            document.getElementById("display").value = "Error";
+        }
+    }
+</script>
 
-            function handleOperator(nextOperator) {
-                const { firstOperand, displayValue, operator } = calculator;
-                const inputValue = parseFloat(displayValue);
-
-                if (operator && calculator.waitingForSecondOperand) {
-                    calculator.operator = nextOperator;
-                    return;
-                }
-
-                if (firstOperand == null) {
-                    calculator.firstOperand = inputValue;
-                } else if (operator) {
-                    const result = performCalculation[operator](firstOperand, inputValue);
-
-                    calculator.displayValue = String(result);
-                    calculator.firstOperand = result;
-                }
-
-                calculator.waitingForSecondOperand = true;
-                calculator.operator = nextOperator;
-            }
-
-            const performCalculation = {
-                '/': (firstOperand, secondOperand) => firstOperand / secondOperand,
-                '*': (firstOperand, secondOperand) => firstOperand * secondOperand,
-                '+': (firstOperand, secondOperand) => firstOperand + secondOperand,
-                '-': (firstOperand, secondOperand) => firstOperand - secondOperand,
-                '=': (firstOperand, secondOperand) => secondOperand,
-                '%': (firstOperand, secondOperand) => firstOperand % secondOperand,
-                '^': (firstOperand, secondOperand) => Math.pow(firstOperand, secondOperand),
-                'sqrt': (firstOperand) => Math.sqrt(firstOperand),
-                'sin': (firstOperand) => Math.sin(firstOperand),
-                'cos': (firstOperand) => Math.cos(firstOperand),
-                'tan': (firstOperand) => Math.tan(firstOperand),
-                'log': (firstOperand) => Math.log10(firstOperand),
-                'ln': (firstOperand) => Math.log(firstOperand)
-            };
-
-            function resetCalculator() {
-                calculator.displayValue = '0';
-                calculator.firstOperand = null;
-                calculator.waitingForSecondOperand = false;
-                calculator.operator = null;
-            }
-
-            function updateDisplay() {
-                const display = document.querySelector('.calculator-screen');
-                display.value = calculator.displayValue;
-            }
-
-            updateDisplay();
-
-            const keys = document.querySelector('.calculator-keys');
-            keys.addEventListener('click', (event) => {
-                const { target } = event;
-
-                if (!target.matches('button')) {
-                    return;
-                }
-
-                if (target.classList.contains('operator')) {
-                    handleOperator(target.value);
-                    updateDisplay();
-                    return;
-                }
-
-                if (target.classList.contains('decimal')) {
-                    inputDecimal(target.value);
-                    updateDisplay();
-                    return;
-                }
-
-                if (target.classList.contains('all-clear')) {
-                    resetCalculator();
-                    updateDisplay();
-                    return;
-                }
-
-                inputDigit(target.value);
-                updateDisplay();
-            });
-        });
-    </script>
 </body>
 </html>
