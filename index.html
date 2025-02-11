@@ -114,31 +114,48 @@
         document.addEventListener('DOMContentLoaded', function () {
             const calculator = {
                 displayValue: '0',
-                operator: null,
+                firstOperand: null,
                 waitingForSecondOperand: false,
-                firstOperand: null
+                operator: null,
             };
 
-            const screen = document.querySelector('.calculator-screen');
-            const keys = document.querySelector('.calculator-keys');
+            function inputDigit(digit) {
+                const { displayValue, waitingForSecondOperand } = calculator;
 
-            function updateDisplay() {
-                screen.value = calculator.displayValue;
+                if (waitingForSecondOperand === true) {
+                    calculator.displayValue = digit;
+                    calculator.waitingForSecondOperand = false;
+                } else {
+                    calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+                }
+            }
+
+            function inputDecimal(dot) {
+                if (calculator.waitingForSecondOperand === true) {
+                    calculator.displayValue = '0.';
+                    calculator.waitingForSecondOperand = false;
+                    return;
+                }
+
+                if (!calculator.displayValue.includes(dot)) {
+                    calculator.displayValue += dot;
+                }
             }
 
             function handleOperator(nextOperator) {
-                const { firstOperand, displayValue, operator, waitingForSecondOperand } = calculator;
+                const { firstOperand, displayValue, operator } = calculator;
                 const inputValue = parseFloat(displayValue);
 
-                if (operator && waitingForSecondOperand) {
+                if (operator && calculator.waitingForSecondOperand) {
                     calculator.operator = nextOperator;
                     return;
                 }
 
-                if (firstOperand == null && !isNaN(inputValue)) {
+                if (firstOperand == null) {
                     calculator.firstOperand = inputValue;
                 } else if (operator) {
                     const result = performCalculation[operator](firstOperand, inputValue);
+
                     calculator.displayValue = String(result);
                     calculator.firstOperand = result;
                 }
@@ -163,8 +180,24 @@
                 'ln': (firstOperand) => Math.log(firstOperand)
             };
 
+            function resetCalculator() {
+                calculator.displayValue = '0';
+                calculator.firstOperand = null;
+                calculator.waitingForSecondOperand = false;
+                calculator.operator = null;
+            }
+
+            function updateDisplay() {
+                const display = document.querySelector('.calculator-screen');
+                display.value = calculator.displayValue;
+            }
+
+            updateDisplay();
+
+            const keys = document.querySelector('.calculator-keys');
             keys.addEventListener('click', (event) => {
                 const { target } = event;
+
                 if (!target.matches('button')) {
                     return;
                 }
@@ -190,38 +223,6 @@
                 inputDigit(target.value);
                 updateDisplay();
             });
-
-            function inputDigit(digit) {
-                const { displayValue, waitingForSecondOperand } = calculator;
-
-                if (waitingForSecondOperand === true) {
-                    calculator.displayValue = digit;
-                    calculator.waitingForSecondOperand = false;
-                } else {
-                    calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
-                }
-            }
-
-            function inputDecimal(dot) {
-                if (calculator.waitingForSecondOperand === true) {
-                    calculator.displayValue = '0.';
-                    calculator.waitingForSecondOperand = false;
-                    return;
-                }
-
-                if (!calculator.displayValue.includes(dot)) {
-                    calculator.displayValue += dot;
-                }
-            }
-
-            function resetCalculator() {
-                calculator.displayValue = '0';
-                calculator.firstOperand = null;
-                calculator.waitingForSecondOperand = false;
-                calculator.operator = null;
-            }
-
-            updateDisplay();
         });
     </script>
 </body>
