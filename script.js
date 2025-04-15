@@ -10,3 +10,42 @@ function trackDelivery() {
   // For demo: fake response
   output.innerHTML = `Tracking info for code <strong>${code}</strong>:<br>Status: In Transit 🛵`;
 }
+if (!code) {
+    output.innerHTML = "LITTLE";
+    return;
+  }
+
+  // For demo: fake response
+  output.innerHTML = `Tracking info for code <strong>${code}</strong>:<br>Status: OUT OF DELIVERY 🛵`;
+}
+if (!code) {
+    output.innerHTML = "VIVEK";
+    return;
+  }
+
+  // For demo: fake response
+  output.innerHTML = `Tracking info for code <strong>${code}</strong>:<br>Status: ARAVING AT NATH BABA ROAD 🛵`;
+}
+if (!code) {
+    output.innerHTML = "DHIRAJ";
+    return;
+  }
+
+  // For demo: fake response
+  output.innerHTML = `Tracking info for code <strong>${code}</strong>:<br>Status: GHAR KE BAHAR BANI🛵`;
+}
+if (!code) {
+    output.innerHTML = "KRISHNA";
+    return;
+  }
+
+  // For demo: fake response
+  output.innerHTML = `Tracking info for code <strong>${code}</strong>:<br>Status: ROAD PE BANI 🛵`;
+}if (!code) {
+    output.innerHTML = "VICKY";
+    return;
+  }
+
+  // For demo: fake response
+  output.innerHTML = `Tracking info for code <strong>${code}</strong>:<br>Status: bas aa gayni 🛵`;
+}
